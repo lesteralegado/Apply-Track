@@ -4,6 +4,45 @@ import { hasLiveAccounts, isEmulated, login } from "./helpers";
 const apiPath = "/src/features/applications/api/applications.ts";
 const clientPath = "/src/lib/firebase/client.ts";
 
+async function captureReviewState(
+  page: Page,
+  state: string,
+  fullPage: boolean,
+) {
+  if (process.env.E2E_CAPTURE_REVIEW_SCREENSHOTS !== "true") return;
+  const previousViewport = page.viewportSize();
+  try {
+    for (const width of [360, 390, 768, 1024, 1440]) {
+      await page.setViewportSize({ width, height: 850 });
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true);
+      await page.screenshot({
+        path: "docs/screenshots/follow-up-" + state + "-" + width + "px.png",
+        fullPage,
+      });
+      if (state === "conflict") {
+        const discard = page.getByRole("button", {
+          name: "Discard draft and refresh",
+        });
+        await discard.focus();
+        await expect(discard).toBeFocused();
+        await expect(discard).toBeInViewport();
+        if (width === 360)
+          await page.screenshot({
+            path: "docs/screenshots/follow-up-conflict-controls-360px.png",
+          });
+        await page.getByRole("dialog").evaluate((element) => {
+          element.scrollTop = 0;
+        });
+      }
+    }
+  } finally {
+    if (previousViewport) await page.setViewportSize(previousViewport);
+  }
+}
 async function seeded(page: Page, followUpDate = "2020-01-01") {
   await page.goto("/app/applications/new");
   await expect(page.getByLabel("Company", { exact: false })).toBeVisible();
@@ -537,11 +576,7 @@ test("dashboard reviews the last due task, retains upcoming work, and persists c
         .getByRole("region", { name: "Upcoming follow-ups" })
         .getByText(upcoming.company),
     ).toBeVisible();
-    if (process.env.E2E_CAPTURE_REVIEW_SCREENSHOTS === "true")
-      await page.screenshot({
-        path: "docs/screenshots/follow-up-complete-1440px.png",
-        fullPage: true,
-      });
+    await captureReviewState(page, "complete", true);
     await page.reload();
     await expect(
       page.getByRole("heading", {
@@ -776,11 +811,7 @@ test("review denial retains a draft; acknowledgment with failed refresh prevents
       "Your review was saved, but we couldn't refresh",
     );
     expect(intercepted).toBe(true);
-    if (process.env.E2E_CAPTURE_REVIEW_SCREENSHOTS === "true")
-      await page.screenshot({
-        path: "docs/screenshots/follow-up-refresh-error-390px.png",
-        fullPage: true,
-      });
+    await captureReviewState(page, "refresh-error", true);
     await expect(
       page.getByRole("button", {
         name: "Review follow-up for " + record.company,
@@ -851,10 +882,7 @@ test("a selected review keeps its draft after a concurrent change and newly fetc
     await expect(
       page.getByRole("button", { name: "Save review", exact: true }),
     ).toHaveCount(0);
-    if (process.env.E2E_CAPTURE_REVIEW_SCREENSHOTS === "true")
-      await page.screenshot({
-        path: "docs/screenshots/follow-up-conflict-390px.png",
-      });
+    await captureReviewState(page, "conflict", false);
     await page
       .getByRole("button", { name: "Discard draft and refresh" })
       .click();

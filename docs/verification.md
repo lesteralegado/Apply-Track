@@ -2,7 +2,7 @@
 
 ## Finite follow-up review — local delivery
 
-Verified on 2026-10-01 in `C:\applytrack`, using disposable `demo-applytrack` Auth/Firestore emulators and local Vite on port 5174. No real records, hosted rules, frontend deployment, or portfolio files were modified. Changes remain local and uncommitted.
+Verified on 2026-10-01 in `C:\applytrack`, using disposable `demo-applytrack` Auth/Firestore emulators and local Vite on port 5174. No real records, hosted rules, frontend deployment, or portfolio files were modified. Implementation and verification made no new project commits or deployments.
 
 | Check                            | Observed result                                                                                                  |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -14,7 +14,7 @@ Verified on 2026-10-01 in `C:\applytrack`, using disposable `demo-applytrack` Au
 | Presentation                     | Review/demo checked at 360, 390, 768, 1024, and 1440px; completion, conflict, and refresh-error states inspected |
 | Accessibility                    | Selected automated checks and keyboard dialog/focus tests passed; not a complete conformance audit               |
 | Cleanup                          | Isolated runner stopped Auth, Firestore, hub, and logging normally                                               |
-| Final simplification/code review | Pending at documentation update; parent verification will record completion separately                           |
+| Final simplification/code review | Completed; eight review lenses, zero actionable findings; R1-R13 and U1-U5 met                                   |
 
 ### Verified behavior
 
@@ -33,6 +33,16 @@ Direct REST requests bypass React. Review checks cover cross-user/signed-out den
 ### Screenshots
 
 The fresh [desktop demo](screenshots/follow-up-demo-1440px.png), [mobile demo](screenshots/follow-up-demo-390px.png), [mobile review](screenshots/follow-up-review-390px.png), [completion](screenshots/follow-up-complete-1440px.png), [refresh error](screenshots/follow-up-refresh-error-390px.png), and [conflict](screenshots/follow-up-conflict-390px.png) were inspected. Review/demo captures also exist at all five listed widths. Full-page captures can contain fixed-navigation stitching artifacts; live viewport tests passed without horizontal overflow.
+
+### Code review
+
+The full `ce-code-review` pass completed on 2026-10-02 against an exact private comparison with the pre-work snapshot. Correctness, standards, testing, maintainability, security, reliability, adversarial checks, and frontend races found no actionable defects. All 13 requirements and five implementation units were met. Receipt: `20261002-041334-b2db4822`.
+
+The independent external-model pass was unavailable because its CLI tools were not installed; a local adversarial review completed. The simplification passes made no production changes. Small label/fixture duplication and repeated queue calculation were retained because their proposed refactors offered little benefit within this feature. No lint command is configured; Prettier checks passed. No code-review fixes or unresolved findings remained.
+
+### Supplemental checks on 2026-10-02
+
+The resumed type check, 73 unit tests, and Prettier check passed. Three supplemental emulator cases passed, followed by one conflict case with recovery-button focus and viewport assertions. Completion, conflict, and refresh-error states were inspected at all five planned widths. The scrollable 360px conflict dialog keeps its recovery controls reachable; [the focused recovery control](screenshots/follow-up-conflict-controls-360px.png) was inspected. Both supplemental emulator runs shut down normally.
 
 ### Reproduce and limits
 

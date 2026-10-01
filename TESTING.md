@@ -31,6 +31,8 @@ Failure tests temporarily deny creation, review commits, or reads only in the is
 
 Direct REST requests bypass React. The emulator suite contains 46 ownership/integrity checks, including legacy compatibility, strict review metadata, timestamps, preservation, and prohibited review changes. The historical hosted path contains 24 checks. A public-only `test:e2e` run with skipped authenticated cases does not satisfy the complete gate; `test:integration` supplies accounts and runs all applicable isolated cases. Clear an inherited debug flag before the runner if set: `$env:DEBUG = $null`.
 
+For the supplemental layout checks and refreshed screenshots, set `$env:E2E_CAPTURE_REVIEW_SCREENSHOTS = 'true'` before `test:integration`. This also checks completion, conflict, and refresh-error layouts at all five widths and verifies that conflict recovery controls can receive focus inside the viewport. Captures contain fictional or disposable emulator records. Remove the process-scoped flag afterward with `Remove-Item Env:E2E_CAPTURE_REVIEW_SCREENSHOTS`.
+
 ## Hosted Firebase verification
 
 ```powershell

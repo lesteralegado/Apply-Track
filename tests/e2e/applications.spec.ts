@@ -64,6 +64,29 @@ test("authenticated CRUD, validation, persistence, status and dashboard follow-u
     .click();
   await expect(page.getByText(company).first()).toBeVisible();
   await page
+    .getByRole("button", { name: "Review follow-up for " + company })
+    .click();
+  await page.getByLabel("Review outcome").selectOption("waiting");
+  await page.getByLabel("Next follow-up date").fill("2099-01-01");
+  await page.getByRole("button", { name: "Save review", exact: true }).click();
+  await expect(page.getByRole("dialog")).not.toBeVisible();
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: "Review follow-up for " + company }),
+  ).toHaveCount(0);
+  await page.goto("/app/applications");
+  await page.getByLabel("Search company or role").fill(company);
+  await page
+    .getByRole("link", { name: "Edit " + company, exact: true })
+    .first()
+    .click();
+  await expect(page.getByLabel("Follow-up date", { exact: false })).toHaveValue(
+    "2099-01-01",
+  );
+  await expect(page.getByLabel("Notes", { exact: false })).toHaveValue(
+    "Prepare portfolio walkthrough.",
+  );
+  await page
     .getByRole("link", { name: "Applications", exact: true })
     .first()
     .click();

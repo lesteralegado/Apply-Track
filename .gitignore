@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env*
+!.env.example
+.vercel/
+test-results/
+playwright-report/
+supabase/.temp/
+supabase/.branches/
+*.tsbuildinfo
+.context/compound-engineering/
+.firebase/
+*-debug.log
+firebase-debug.*.log

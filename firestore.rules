@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owns(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+    function validDate(value) {
+      return value == null || (value is string && (
+        value.matches('^[0-9]{4}-(0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01])$')
+        || value.matches('^[0-9]{4}-(0[469]|11)-(0[1-9]|[12][0-9]|30)$')
+        || value.matches('^[0-9]{4}-02-(0[1-9]|1[0-9]|2[0-8])$')
+        || value.matches('^([0-9]{2}(0[48]|[2468][048]|[13579][26])|([02468][048]|[13579][26])00)-02-29$')
+      ));
+    }
+    function validReview(review) {
+      return review == null || (review is map
+        && review.keys().hasAll(['outcome', 'reviewed_at'])
+        && review.keys().hasOnly(['outcome', 'reviewed_at'])
+        && review.outcome in ['reviewed', 'waiting', 'stopped']
+        && review.reviewed_at is timestamp);
+    }
+    function validReviewUpdate() {
+      let before = resource.data.get('follow_up_review', null);
+      let after = request.resource.data.get('follow_up_review', null);
+      return after == before || (after != null
+        && after.reviewed_at == request.time
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['follow_up_review', 'follow_up_date', 'updated_at'])
+        && (after.outcome != 'stopped' || request.resource.data.follow_up_date == null));
+    }
+    function validApplication(data, userId) {
+      return data.keys().hasAll([
+        'owner_id', 'company', 'job_title', 'job_url', 'status',
+        'application_date', 'follow_up_date', 'notes', 'created_at', 'updated_at'
+      ]) && data.keys().hasOnly([
+        'owner_id', 'company', 'job_title', 'job_url', 'status',
+        'application_date', 'follow_up_date', 'notes', 'created_at', 'updated_at', 'follow_up_review'
+      ])
+      && validReview(data.get('follow_up_review', null))
+      && data.owner_id == userId
+      && data.company is string && data.company.matches('.*\\S.*')
+      && data.job_title is string && data.job_title.matches('.*\\S.*')
+      && (data.job_url == null || (data.job_url is string && data.job_url.matches('^[hH][tT][tT][pP][sS]?://[^\\s/]+.*$')))
+      && data.status in ['saved', 'applied', 'interviewing', 'offer', 'rejected', 'withdrawn']
+      && validDate(data.application_date) && validDate(data.follow_up_date)
+      && (data.status == 'saved' || data.application_date != null)
+      && (data.notes == null || data.notes is string)
+      && data.created_at is timestamp && data.updated_at is timestamp;
+    }
+    match /users/{userId}/applications/{applicationId} {
+      allow read: if owns(userId);
+      allow create: if owns(userId)
+        && validApplication(request.resource.data, userId)
+        && request.resource.data.get('follow_up_review', null) == null
+        && request.resource.data.created_at == request.time
+        && request.resource.data.updated_at == request.time;
+      allow update: if owns(userId)
+        && resource.data.owner_id == userId
+        && validApplication(request.resource.data, userId)
+        && validReviewUpdate()
+        && request.resource.data.owner_id == resource.data.owner_id
+        && request.resource.data.created_at == resource.data.created_at
+        && request.resource.data.updated_at == request.time;
+      allow delete: if owns(userId) && resource.data.owner_id == userId;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+

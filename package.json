@@ -1,0 +1,50 @@
+{
+  "name": "applytrack",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b \u0026\u0026 vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:privacy": "node --env-file=.env.local scripts/verify-privacy.mjs",
+    "emulators": "node scripts/run-emulators.mjs",
+    "test:integration": "node scripts/run-emulators.mjs test",
+    "test:firebase": "node --env-file=.env.local scripts/run-browser-tests.mjs",
+    "firebase:deploy": "node --env-file=.env.local scripts/deploy-firebase.mjs"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "5.9.1",
+    "@tailwindcss/vite": "4.3.3",
+    "@tanstack/react-query": "5.104.0",
+    "firebase": "12.19.0",
+    "lucide-react": "1.49.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-hook-form": "7.89.0",
+    "react-router-dom": "7.18.4",
+    "tailwindcss": "4.3.3",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "26.6.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "agent-browser": "0.38.1",
+    "firebase-tools": "15.32.1",
+    "prettier": "3.9.9",
+    "typescript": "7.0.2",
+    "vite": "8.3.1",
+    "vitest": "5.0.3"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "1.14.5"
+  }
+}

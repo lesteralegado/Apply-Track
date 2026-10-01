@@ -1,0 +1,1196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ApplyTrack — five directions worth exploring</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #f6f8f3;
+        --ink: #1d3028;
+        --muted: #526457;
+        --line: #d7dfd5;
+        --accent: #174638;
+        --soft: #e8efdf;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 1.5rem;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font:
+          16px/1.6 system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+      }
+      main {
+        max-width: 60rem;
+        margin: auto;
+        padding: 3rem 1.5rem;
+      }
+      p {
+        max-width: 72ch;
+        margin: 0.6rem 0 1rem;
+      }
+      h1,
+      h2,
+      h3 {
+        line-height: 1.2;
+        letter-spacing: -0.025em;
+      }
+      h1 {
+        font-size: 2.25rem;
+        max-width: 24ch;
+        margin: 0.6rem 0 1rem;
+      }
+      h2 {
+        font-size: 1.6rem;
+        margin: 0 0 1rem;
+      }
+      h3 {
+        font-size: 1.35rem;
+        margin: 0.35rem 0 1rem;
+      }
+      a {
+        color: var(--accent);
+        text-underline-offset: 0.2em;
+      }
+      a:hover {
+        text-decoration-thickness: 2px;
+      }
+      a:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 4px;
+      }
+      code {
+        font-size: 0.87em;
+        background: #eef2ea;
+        padding: 0.1rem 0.25rem;
+        border-radius: 3px;
+        overflow-wrap: anywhere;
+      }
+      strong {
+        color: inherit;
+      }
+      .eyebrow {
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 0;
+      }
+      .document-meta,
+      .idea-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem 2rem;
+        margin: 1rem 0;
+      }
+      .document-meta div,
+      .idea-meta div {
+        display: flex;
+        gap: 0.5rem;
+      }
+      dt {
+        font-weight: 650;
+      }
+      dd {
+        margin: 0;
+      }
+      .document-meta {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin: 1.75rem 0;
+      }
+      .stats div {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 1rem;
+      }
+      .stats strong {
+        display: block;
+        font-size: 1.8rem;
+        line-height: 1.15;
+      }
+      .stats span {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.5rem;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        padding: 1rem 0;
+        margin: 1.75rem 0 2.5rem;
+      }
+      section {
+        margin: 2.5rem 0;
+      }
+      .callout {
+        background: var(--soft);
+        border: 1px solid #cdd9c0;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        margin: 1.5rem 0;
+      }
+      .callout p:last-child {
+        margin-bottom: 0;
+      }
+      .jump-list {
+        padding-left: 1.5rem;
+        margin-bottom: 1.6rem;
+      }
+      .jump-list li {
+        margin: 0.4rem 0;
+      }
+      article {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.7rem;
+        margin: 1.3rem 0 2rem;
+      }
+      .idea-meta {
+        font-size: 0.85rem;
+        margin: 0.7rem 0 1.4rem;
+      }
+      .idea-meta div {
+        background: var(--soft);
+        border-radius: 6px;
+        padding: 0.35rem 0.65rem;
+      }
+      .fields dt {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 1rem;
+      }
+      .fields dd p {
+        margin-top: 0.2rem;
+      }
+      figure {
+        margin: 1.5rem 0 0;
+        padding: 1rem;
+        background: var(--paper);
+        border-radius: 10px;
+      }
+      svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-width: 40rem;
+        margin: auto;
+      }
+      svg text {
+        fill: var(--ink);
+        font:
+          20px system-ui,
+          sans-serif;
+      }
+      figcaption {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 0.7rem;
+      }
+      .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 0.9rem;
+        text-align: left;
+      }
+      th,
+      td {
+        padding: 0.85rem 0.7rem;
+        vertical-align: top;
+        border-bottom: 1px solid var(--line);
+      }
+      thead th {
+        background: var(--soft);
+        font-size: 0.8rem;
+      }
+      tbody th {
+        font-size: 0.78rem;
+        white-space: nowrap;
+      }
+      td:nth-child(2) {
+        width: 30%;
+        font-weight: 550;
+      }
+      footer {
+        margin-top: 3rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--line);
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+      .skip {
+        position: absolute;
+        left: 1rem;
+        top: -5rem;
+        background: white;
+        padding: 0.75rem;
+      }
+      .skip:focus {
+        top: 1rem;
+      }
+      @media (max-width: 600px) {
+        main {
+          padding: 1.8rem 1rem;
+        }
+        h1 {
+          font-size: 1.85rem;
+        }
+        article {
+          padding: 1.1rem;
+        }
+        .stats {
+          gap: 0.5rem;
+        }
+        .stats div {
+          padding: 0.8rem;
+        }
+        .stats span {
+          font-size: 0.75rem;
+        }
+        .document-meta {
+          gap: 0.3rem 1rem;
+        }
+        th,
+        td {
+          padding: 0.6rem 0.4rem;
+        }
+        table {
+          font-size: 0.8rem;
+        }
+        .idea-meta {
+          gap: 0.5rem;
+        }
+        figure {
+          padding: 0.5rem;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+      @media print {
+        body {
+          background: white;
+        }
+        main {
+          max-width: none;
+          padding: 0;
+        }
+        nav,
+        .jump-list,
+        .skip {
+          display: none;
+        }
+        article {
+          break-inside: avoid;
+        }
+        a {
+          color: inherit;
+        }
+        figure {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#ranked-ideas">Skip to ranked ideas</a>
+    <main>
+      <header>
+        <p class="eyebrow">ApplyTrack / Ideation</p>
+        <h1>Five directions worth exploring</h1>
+        <p>
+          Deeper choices for the tracker and clearer evidence for the resume
+          project, grounded in the current Firebase app.
+        </p>
+        <dl class="document-meta">
+          <div>
+            <dt>Date</dt>
+            <dd><time datetime="2026-10-01">2026-10-01</time></dd>
+          </div>
+          <div>
+            <dt>Topic</dt>
+            <dd>open</dd>
+          </div>
+          <div>
+            <dt>Mode</dt>
+            <dd>ApplyTrack codebase</dd>
+          </div>
+        </dl>
+        <div class="stats" aria-label="Idea selection">
+          <div><strong>42</strong><span>raw ideas</span></div>
+          <div>
+            <strong>27</strong><span>distinct candidates assessed</span>
+          </div>
+          <div><strong>5</strong><span>ranked directions</span></div>
+        </div>
+      </header>
+      <nav aria-label="Document navigation">
+        <a href="#grounding-context">Grounding Context</a
+        ><a href="#ranked-ideas">Ranked Ideas</a
+        ><a href="#rejection-summary">Rejection Summary</a
+        ><a href="#sources">Sources</a>
+      </nav>
+      <section id="grounding-context">
+        <h2>Grounding Context</h2>
+        <h3>Codebase Context</h3>
+        <p>
+          ApplyTrack already has Firebase authentication, owner-scoped
+          application storage, six statuses, search and filters, date-based
+          follow-ups, mobile cards and an immutable fictional demo. Typed data
+          access and Firestore rules enforce ownership. This document proposes
+          directions; none of the ideas below has been implemented.
+        </p>
+        <p>
+          The verification report records 37 unit tests, 25 emulator browser
+          tests, 20 hosted browser tests with five emulator-only skips, and 24
+          direct API privacy checks. Those are recorded results, not tests rerun
+          for this document. Saved-to-Applied date assignment and a late
+          account-A read after switching to account B remain recorded coverage
+          gaps, without an established defect.
+        </p>
+        <p>
+          The frontend is local and deployment remains deferred. No commit
+          history is available. The project stays independent from the
+          portfolio, with no AI, scraping, email reminders, calendar
+          integrations, uploads, extensions, teams or custom backend in v1. The
+          solutions store has no captured lessons beyond its introductory
+          README.
+        </p>
+        <p>
+          Official
+          <a
+            href="https://help.tealhq.com/en/articles/14435727-how-to-track-your-job-applications"
+            >Teal</a
+          >
+          and
+          <a href="https://help.huntr.co/en/articles/10042709-maps-and-metrics"
+            >Huntr</a
+          >
+          documentation establishes workflow organization, activity records and
+          exports as prior art.
+          <a href="https://linear.app/docs/initiative-and-project-updates"
+            >Linear's project updates</a
+          >
+          provide an analogy for separating lifecycle status from context and
+          freshness. None of these sources establishes an unmet ApplyTrack user
+          need.
+        </p>
+        <h3>Topic Axes</h3>
+        <p>
+          Decomposition skipped — surprise-me mode. The shortlist spans
+          follow-up decisions, recruiter demonstration, portability, progress
+          history and offer decisions.
+        </p>
+        <div class="callout">
+          <p>
+            <strong>Top pick: a finite follow-up review.</strong> It builds on
+            the tracker's attention queue and makes deliberate waiting a
+            meaningful result of a visit. If the immediate goal is explaining
+            the project to recruiters, the read-only evidence tour is the
+            smaller option.
+          </p>
+        </div>
+      </section>
+      <section id="ranked-ideas">
+        <h2>Ranked Ideas</h2>
+        <p>
+          Confidence percentages are judgments about how strongly this snapshot
+          supports exploring a direction. They are not measured demand or
+          predicted success rates. Complexity is relative to this project; it is
+          not a delivery-time promise.
+        </p>
+        <ol class="jump-list">
+          <li><a href="#idea-1">A finite follow-up review</a></li>
+          <li>
+            <a href="#idea-2">A read-only recruiter tour with evidence</a>
+          </li>
+          <li><a href="#idea-3">A portable application handoff</a></li>
+          <li><a href="#idea-4">A truthful progress notebook</a></li>
+          <li><a href="#idea-5">Offer received, decision still pending</a></li>
+        </ol>
+        <article id="idea-1" aria-labelledby="heading-1">
+          <header class="card-head">
+            <p class="eyebrow">Direction 1</p>
+            <h3 id="heading-1">1. A finite follow-up review</h3>
+            <dl class="idea-meta">
+              <div>
+                <dt>Confidence</dt>
+                <dd>75%</dd>
+              </div>
+              <div>
+                <dt>Complexity</dt>
+                <dd>Medium</dd>
+              </div>
+            </dl>
+          </header>
+          <dl class="fields">
+            <dt>Description</dt>
+            <dd>
+              <p>
+                Make a visit to ApplyTrack a review that can finish. An
+                application can need an action from you, be waiting on an
+                employer, or have no further pursuit planned. Resolving today's
+                follow-up should preserve that meaning without forcing a new
+                date or changing the hiring stage.
+              </p>
+            </dd>
+            <dt>Basis</dt>
+            <dd>
+              <p>
+                direct: The record has status, application date, follow-up date
+                and notes, but no explicit next-move responsibility
+                (<code>src/features/applications/types.ts:11–16</code>). The
+                attention queue uses status and dates
+                (<code>src/features/dashboard/utils/statistics.ts:15–28</code>).
+                Existing notes and date edits can already express waiting
+                manually.
+              </p>
+            </dd>
+            <dt>Rationale</dt>
+            <dd>
+              <p>
+                The opportunity is a clear review workflow, rather than more
+                record fields. It could help a person distinguish work they can
+                do from waiting they have consciously accepted. This need is a
+                hypothesis; the project has no observed usage evidence.
+              </p>
+            </dd>
+            <dt>Downsides</dt>
+            <dd>
+              <p>
+                Responsibility and review completion can turn a small tracker
+                into a task manager. Dates must not imply a message was sent.
+                The idea earns its place only if it improves decisions beyond
+                the current notes and date controls.
+              </p>
+            </dd>
+            <dt>Discussion test</dt>
+            <dd>
+              <p>
+                Can someone finish today's review while an application remains
+                Applied, without recording a fictitious contact?
+              </p>
+            </dd>
+          </dl>
+          <figure>
+            <svg
+              viewBox="0 0 600 175"
+              role="img"
+              aria-labelledby="review-title"
+            >
+              <title id="review-title">
+                A review can resolve as action, deliberate waiting, or release
+                while the hiring stage stays separate.
+              </title>
+              <defs>
+                <marker
+                  id="review-arrow"
+                  markerWidth="8"
+                  markerHeight="8"
+                  refX="7"
+                  refY="4"
+                  orient="auto"
+                >
+                  <path d="M0 0L8 4L0 8Z" fill="#476459" />
+                </marker>
+              </defs>
+              <rect
+                x="210"
+                y="8"
+                width="180"
+                height="46"
+                rx="10"
+                fill="#e5eddc"
+                stroke="#a8bca0"
+              />
+              <text x="300" y="38" text-anchor="middle">
+                Review this record
+              </text>
+              <path
+                d="M300 54V75H100V99 M300 54V99 M300 54V75H500V99"
+                fill="none"
+                stroke="#476459"
+                stroke-width="2"
+                marker-end="url(#review-arrow)"
+              />
+              <rect
+                x="20"
+                y="104"
+                width="160"
+                height="48"
+                rx="10"
+                fill="#fff"
+                stroke="#bdc9c2"
+              />
+              <rect
+                x="220"
+                y="104"
+                width="160"
+                height="48"
+                rx="10"
+                fill="#fff"
+                stroke="#bdc9c2"
+              />
+              <rect
+                x="420"
+                y="104"
+                width="160"
+                height="48"
+                rx="10"
+                fill="#fff"
+                stroke="#bdc9c2"
+              />
+              <text x="100" y="135" text-anchor="middle">Act</text>
+              <text x="300" y="135" text-anchor="middle">
+                Wait deliberately
+              </text>
+              <text x="500" y="135" text-anchor="middle">Release</text>
+            </svg>
+            <figcaption>
+              Conceptual direction: today's review can finish while the hiring
+              stage remains unchanged.
+            </figcaption>
+          </figure>
+        </article>
+        <article id="idea-2" aria-labelledby="heading-2">
+          <header class="card-head">
+            <p class="eyebrow">Direction 2</p>
+            <h3 id="heading-2">2. A read-only recruiter tour with evidence</h3>
+            <dl class="idea-meta">
+              <div>
+                <dt>Confidence</dt>
+                <dd>85%</dd>
+              </div>
+              <div>
+                <dt>Complexity</dt>
+                <dd>Low</dd>
+              </div>
+            </dl>
+          </header>
+          <dl class="fields">
+            <dt>Description</dt>
+            <dd>
+              <p>
+                Guide a visitor through a few fictional situations using the
+                existing filters and detail views. Pair a useful product
+                decision with one curated account of failure and recovery, then
+                point to dated verification evidence. Visitors observe and
+                inspect; sample records remain unchanged.
+              </p>
+            </dd>
+            <dt>Basis</dt>
+            <dd>
+              <p>
+                direct: The demo already shares dashboard/list behavior and
+                presents read-only fictional details (<code
+                  >src/features/demo/DemoDashboard.tsx:24–29, 52–54, 66–82</code
+                >). <code>UI_UX.md:325–346</code> defines its read-only
+                boundary. <code>docs/verification.md</code> records the
+                reproduced create/readback problem and its passing regression.
+              </p>
+            </dd>
+            <dt>Rationale</dt>
+            <dd>
+              <p>
+                Your original goal is a resume project you can explain. This
+                makes existing product choices and measured engineering work
+                easier to inspect without an account. A curated failure story
+                could make the demo memorable, but no recruiter response has
+                been measured.
+              </p>
+            </dd>
+            <dt>Downsides</dt>
+            <dd>
+              <p>
+                An overlong tour could obstruct the tracker demo. Fictional
+                illustrations must be labeled and must not masquerade as live
+                failures. Evidence becomes stale if claims are not kept dated.
+                Technical detail belongs in the reviewer explanation, away from
+                ordinary tracker flows.
+              </p>
+            </dd>
+            <dt>Discussion test</dt>
+            <dd>
+              <p>
+                Can a visitor describe one user problem and one tested
+                engineering choice after a short inspection, without signup?
+              </p>
+            </dd>
+          </dl>
+        </article>
+        <article id="idea-3" aria-labelledby="heading-3">
+          <header class="card-head">
+            <p class="eyebrow">Direction 3</p>
+            <h3 id="heading-3">3. A portable application handoff</h3>
+            <dl class="idea-meta">
+              <div>
+                <dt>Confidence</dt>
+                <dd>75%</dd>
+              </div>
+              <div>
+                <dt>Complexity</dt>
+                <dd>Low</dd>
+              </div>
+            </dl>
+          </header>
+          <dl class="fields">
+            <dt>Description</dt>
+            <dd>
+              <p>
+                Give the owner a readable download of application facts and
+                personal notes, useful when returning after a pause or keeping a
+                copy outside ApplyTrack. Submission context and closure reasons
+                can remain ordinary user-written notes. This direction does not
+                promise imports, restoration, or public sharing.
+              </p>
+            </dd>
+            <dt>Basis</dt>
+            <dd>
+              <p>
+                direct: Owner-scoped reads already return the application fields
+                (<code>src/features/applications/api/applications.ts:19–43</code>;
+                <code>src/features/applications/types.ts:5–17</code>). reasoned:
+                Context becomes more durable when it remains understandable
+                without the original interface. Export is established prior art
+                in the official Teal and Huntr documentation.
+              </p>
+            </dd>
+            <dt>Rationale</dt>
+            <dd>
+              <p>
+                The new capability is taking the existing record with you;
+                structured note templates alone would add little. It also offers
+                an interview discussion about preserving date meaning and
+                private ownership at a data boundary.
+              </p>
+            </dd>
+            <dt>Downsides</dt>
+            <dd>
+              <p>
+                A downloaded file contains private information and is no longer
+                protected by Firestore rules. Format and completeness matter. A
+                readable copy must not be called a restorable backup, and export
+                is useful rather than novel.
+              </p>
+            </dd>
+            <dt>Discussion test</dt>
+            <dd>
+              <p>
+                Could future you understand what was applied for, what was
+                waiting, and why a record closed without opening this app?
+              </p>
+            </dd>
+          </dl>
+        </article>
+        <article id="idea-4" aria-labelledby="heading-4">
+          <header class="card-head">
+            <p class="eyebrow">Direction 4</p>
+            <h3 id="heading-4">4. A truthful progress notebook</h3>
+            <dl class="idea-meta">
+              <div>
+                <dt>Confidence</dt>
+                <dd>70%</dd>
+              </div>
+              <div>
+                <dt>Complexity</dt>
+                <dd>High</dd>
+              </div>
+            </dl>
+          </header>
+          <dl class="fields">
+            <dt>Description</dt>
+            <dd>
+              <p>
+                Keep actual stage changes distinct from administrative edits, so
+                a corrected job URL does not imply new hiring progress. A
+                returning user could see what genuinely changed since their last
+                review. Earlier events remain unknown unless the owner supplies
+                them; this direction must not invent historical transitions.
+              </p>
+            </dd>
+            <dt>Basis</dt>
+            <dd>
+              <p>
+                direct: Both ordinary updates and status changes write
+                <code>updated_at</code> (<code
+                  >src/features/applications/api/applications.ts:104–107,
+                  143–151</code
+                >). The model stores only current stage and generic timestamps
+                (<code>src/features/applications/types.ts:11–16</code>). Those
+                facts cannot reconstruct a stage history.
+              </p>
+            </dd>
+            <dt>Rationale</dt>
+            <dd>
+              <p>
+                One accurately recorded event could support recall, progress
+                review and future explanations. The value is honest history,
+                rather than a chart made from current status counts. Dated
+                activities are already category prior art.
+              </p>
+            </dd>
+            <dt>Downsides</dt>
+            <dd>
+              <p>
+                This is the largest extension: event meaning, correction
+                behavior, ownership rules and review persistence all need
+                decisions. It could consume the focused v1 budget. Treat it as a
+                later option unless real use demonstrates a need for history.
+              </p>
+            </dd>
+            <dt>Discussion test</dt>
+            <dd>
+              <p>
+                Can the product distinguish yesterday's interview confirmation
+                from yesterday's spelling correction using recorded facts?
+              </p>
+            </dd>
+          </dl>
+          <figure>
+            <svg
+              viewBox="0 0 600 180"
+              role="img"
+              aria-labelledby="history-title"
+            >
+              <title id="history-title">
+                Administrative edits and actual hiring changes tell different
+                stories.
+              </title>
+              <defs>
+                <marker
+                  id="history-arrow"
+                  markerWidth="8"
+                  markerHeight="8"
+                  refX="7"
+                  refY="4"
+                  orient="auto"
+                >
+                  <path d="M0 0L8 4L0 8Z" fill="#476459" />
+                </marker>
+              </defs>
+              <rect
+                x="20"
+                y="10"
+                width="260"
+                height="48"
+                rx="10"
+                fill="#fff"
+                stroke="#bdc9c2"
+              />
+              <rect
+                x="320"
+                y="10"
+                width="260"
+                height="48"
+                rx="10"
+                fill="#fff"
+                stroke="#bdc9c2"
+              />
+              <text x="150" y="41" text-anchor="middle">
+                URL or spelling corrected
+              </text>
+              <text x="450" y="41" text-anchor="middle">
+                Interview confirmed
+              </text>
+              <path
+                d="M150 58V100 M450 58V100"
+                stroke="#476459"
+                stroke-width="2"
+                marker-end="url(#history-arrow)"
+              />
+              <rect
+                x="20"
+                y="108"
+                width="260"
+                height="48"
+                rx="10"
+                fill="#eef1ed"
+                stroke="#bdc9c2"
+              />
+              <rect
+                x="320"
+                y="108"
+                width="260"
+                height="48"
+                rx="10"
+                fill="#e5eddc"
+                stroke="#a8bca0"
+              />
+              <text x="150" y="139" text-anchor="middle">
+                Record maintenance
+              </text>
+              <text x="450" y="139" text-anchor="middle">Hiring progress</text>
+            </svg>
+            <figcaption>
+              Conceptual distinction: editing a description does not establish a
+              new hiring event.
+            </figcaption>
+          </figure>
+        </article>
+        <article id="idea-5" aria-labelledby="heading-5">
+          <header class="card-head">
+            <p class="eyebrow">Direction 5</p>
+            <h3 id="heading-5">5. Offer received, decision still pending</h3>
+            <dl class="idea-meta">
+              <div>
+                <dt>Confidence</dt>
+                <dd>60%</dd>
+              </div>
+              <div>
+                <dt>Complexity</dt>
+                <dd>Medium</dd>
+              </div>
+            </dl>
+          </header>
+          <dl class="fields">
+            <dt>Description</dt>
+            <dd>
+              <p>
+                Explore a small personal decision space for an undecided offer:
+                what needs an answer and when the owner wants to decide.
+                Receiving an offer ends some outreach, while a response or
+                question may still need attention. This is a proposed change in
+                product meaning, not a defect in the current implementation.
+              </p>
+            </dd>
+            <dt>Basis</dt>
+            <dd>
+              <p>
+                direct:
+                <code>src/features/dashboard/utils/statistics.ts:19</code>
+                excludes Offer alongside Rejected and Withdrawn.
+                <code>UI_UX.md:238–242</code> intentionally treats those stages
+                as completed. reasoned: Completion of outreach and completion of
+                a personal decision are separate events.
+              </p>
+            </dd>
+            <dt>Rationale</dt>
+            <dd>
+              <p>
+                This could keep the tracker useful when an applicant has a
+                consequential choice, without notifications or a calendar.
+                Demand is unobserved, and the current completion policy is
+                deliberate.
+              </p>
+            </dd>
+            <dt>Downsides</dt>
+            <dd>
+              <p>
+                It requires revisiting the documented completed-state policy. It
+                can easily expand into an offer comparison or negotiation
+                product. A response decision should not silently revive old
+                outreach follow-ups.
+              </p>
+            </dd>
+            <dt>Discussion test</dt>
+            <dd>
+              <p>
+                Should an undecided offer with a tomorrow response date
+                disappear from the attention view?
+              </p>
+            </dd>
+          </dl>
+        </article>
+      </section>
+      <section id="rejection-summary">
+        <h2>Rejection Summary</h2>
+        <p>
+          The 42 raw ideas were merged into 21 topics, then six combinations
+          were considered. All 27 received an independent evidence and
+          discussion-value check. The 22 cuts below include proposals folded
+          into a stronger direction. No check was overruled to keep an idea.
+          User needs and expected benefits remain hypotheses.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Idea</th>
+                <th scope="col">Reason cut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="c01">
+                <th scope="row">C01</th>
+                <td>Who owes the next move?</td>
+                <td>
+                  Folded into the stronger finite review, which connects
+                  responsibility to resolution and a stopping point.
+                </td>
+              </tr>
+              <tr id="c02">
+                <th scope="row">C02</th>
+                <td>Resolve a follow-up without inventing another task</td>
+                <td>
+                  Current date clearing and notes already allow completion
+                  manually; explicit resolution belongs inside the finite
+                  review.
+                </td>
+              </tr>
+              <tr id="c03">
+                <th scope="row">C03</th>
+                <td>Record real movement separately from edits</td>
+                <td>
+                  Folded into the progress notebook, which connects truthful
+                  movement to returning-user context.
+                </td>
+              </tr>
+              <tr id="c05">
+                <th scope="row">C05</th>
+                <td>Represent uncertain historical application dates</td>
+                <td>
+                  Would revise the required application-date contract; the
+                  focused v1 constraint outweighs this representational benefit.
+                </td>
+              </tr>
+              <tr id="c06">
+                <th scope="row">C06</th>
+                <td>Confirmed save versus unavailable fresh view</td>
+                <td>
+                  Useful targeted reliability investigation, but below the
+                  direction-level floor; other-operation partial failures remain
+                  unreproduced.
+                </td>
+              </tr>
+              <tr id="c07">
+                <th scope="row">C07</th>
+                <td>Remember what you submitted</td>
+                <td>
+                  General notes already hold submission context; stronger value
+                  comes from the portable handoff.
+                </td>
+              </tr>
+              <tr id="c08">
+                <th scope="row">C08</th>
+                <td>Finish today's review</td>
+                <td>
+                  A congratulatory ending alone is weak; folded into a review
+                  with explicit responsibility and resolution.
+                </td>
+              </tr>
+              <tr id="c09">
+                <th scope="row">C09</th>
+                <td>Capture intent before the full form</td>
+                <td>
+                  The form already starts with the required company/title and
+                  defaults to Saved; marginal value is unvalidated polish.
+                </td>
+              </tr>
+              <tr id="c10">
+                <th scope="row">C10</th>
+                <td>Saved opportunities as decisions</td>
+                <td>
+                  Reasons and review dates already fit notes and existing date
+                  fields; no distinct decision capability is established.
+                </td>
+              </tr>
+              <tr id="c11">
+                <th scope="row">C11</th>
+                <td>Editable fictional rehearsal</td>
+                <td>
+                  Local fictional mutation controls still violate the user's
+                  read-only demo requirement.
+                </td>
+              </tr>
+              <tr id="c12">
+                <th scope="row">C12</th>
+                <td>Closure context for your future self</td>
+                <td>
+                  Closure status and notes already preserve reasons; standalone
+                  prompts are weak, and context fits the portable handoff.
+                </td>
+              </tr>
+              <tr id="c13">
+                <th scope="row">C13</th>
+                <td>Read-only failure story</td>
+                <td>
+                  A single failure vignette is presentation polish; folded into
+                  the broader read-only recruiter tour.
+                </td>
+              </tr>
+              <tr id="c14">
+                <th scope="row">C14</th>
+                <td>A brief handoff to future you</td>
+                <td>
+                  A note template alone adds little beyond existing notes; its
+                  return-context purpose informs the portable handoff.
+                </td>
+              </tr>
+              <tr id="c15">
+                <th scope="row">C15</th>
+                <td>Honest empty-queue coverage</td>
+                <td>
+                  Accurate empty-queue coverage is worthwhile quality work, but
+                  below the direction-level floor.
+                </td>
+              </tr>
+              <tr id="c16">
+                <th scope="row">C16</th>
+                <td>Guided read-only recruiter exhibits</td>
+                <td>
+                  Folded into the recruiter tour with a coherent observation
+                  task and dated evidence.
+                </td>
+              </tr>
+              <tr id="c17">
+                <th scope="row">C17</th>
+                <td>Review checkpoint rather than edit order</td>
+                <td>
+                  Needs meaningful-change semantics; folded into the progress
+                  notebook rather than storing another unexplained timestamp.
+                </td>
+              </tr>
+              <tr id="c18">
+                <th scope="row">C18</th>
+                <td>Owner-chosen attention capacity</td>
+                <td>
+                  No overload evidence; capacity controls could obscure
+                  obligations and add work beyond ordinary queue selection.
+                </td>
+              </tr>
+              <tr id="c19">
+                <th scope="row">C19</th>
+                <td>Silence as limited knowledge</td>
+                <td>
+                  Date age and notes already exist; missing response metadata
+                  cannot establish employer silence.
+                </td>
+              </tr>
+              <tr id="c20">
+                <th scope="row">C20</th>
+                <td>Follow-up as a review commitment</td>
+                <td>
+                  Current date editing does not claim employer contact; its
+                  useful review framing is folded into the finite review.
+                </td>
+              </tr>
+              <tr id="c21">
+                <th scope="row">C21</th>
+                <td>Inspectable boundaries of verification</td>
+                <td>
+                  Dated evidence already exists in the verification document;
+                  folded into the recruiter tour.
+                </td>
+              </tr>
+              <tr id="s26">
+                <th scope="row">S26</th>
+                <td>Make confirmations match what the app knows</td>
+                <td>
+                  Two accurate-feedback improvements do not become a direction
+                  simply by grouping them; retain as quality work.
+                </td>
+              </tr>
+              <tr id="s27">
+                <th scope="row">S27</th>
+                <td>A small review of Saved choices</td>
+                <td>
+                  Saved, notes and review dates already cover much of the
+                  proposal; extra capacity controls lack a demonstrated need.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section id="sources">
+        <h2>Sources</h2>
+        <p>
+          Code references were checked against the local snapshot in
+          <code>C:\applytrack</code>. No remote repository URL is configured.
+        </p>
+        <ul>
+          <li>
+            <code>ARCHITECTURE.md</code>, <code>DATABASE.md</code>,
+            <code>UI_UX.md</code>, <code>SECURITY.md</code> — current product
+            and privacy boundaries.
+          </li>
+          <li>
+            <code>docs/verification.md</code> — recorded results, the fixed
+            create/readback problem and coverage limits.
+          </li>
+          <li>
+            <code>src/features/applications/types.ts</code> and
+            <code>src/features/applications/api/applications.ts</code> — stored
+            facts and write/read semantics.
+          </li>
+          <li>
+            <code>src/features/dashboard/utils/statistics.ts</code>,
+            <code>src/features/dashboard/components/DashboardOverview.tsx</code>
+            — follow-up coverage and current empty-state meaning.
+          </li>
+          <li>
+            <code>src/features/demo/DemoDashboard.tsx</code> — current immutable
+            fictional demo.
+          </li>
+          <li>
+            <a
+              href="https://help.tealhq.com/en/articles/14435727-how-to-track-your-job-applications"
+              >Teal: tracking job applications</a
+            >
+            — category workflow and export prior art.
+          </li>
+          <li>
+            <a
+              href="https://help.huntr.co/en/articles/10042709-maps-and-metrics"
+              >Huntr: maps and metrics</a
+            >
+            — dated activity and export prior art.
+          </li>
+          <li>
+            <a href="https://linear.app/docs/initiative-and-project-updates"
+              >Linear: initiative and project updates</a
+            >
+            — lifecycle versus health/context analogy.
+          </li>
+          <li>
+            <a
+              href="https://firebase.google.com/docs/firestore/manage-data/enable-offline"
+              >Firebase: offline data</a
+            >
+            — cache provenance and persistence caveats; this app is not claimed
+            to support offline operation.
+          </li>
+          <li>
+            <a
+              href="https://www.w3.org/WAI/WCAG21/Understanding/status-messages"
+              >W3C: understanding status messages</a
+            >
+            — accessible feedback principles.
+          </li>
+        </ul>
+      </section>
+      <footer class="composition-signal">
+        Composed 2026-10-01T12:30:30Z by ce-ideate from the ApplyTrack “Surprise
+        me” request and current codebase evidence.
+      </footer>
+    </main>
+  </body>
+</html>

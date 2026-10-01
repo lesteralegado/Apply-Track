@@ -1,0 +1,1 @@
+-- No real applications are seeded. The recruiter demo is fictional frontend-only data.
